@@ -37,14 +37,20 @@ return [
 
     'connections' => [
 
-        'main' => [
-            'salt' => env('SALT_MAIN', 'ud$y,|P/w 0>g]AGL&3eNZ9!?kcwmS(DvZa$18|6v97//[<x+P.)%0S )){#-7Xh'),
+        'posts' => [
+            'salt' => env('SALT_POSTS', 'ud$y,|P/w 0>g]AGL&3eNZ9!?kcwmS(DvZa$18|6v97//[<x+P.)%0S )){#-7Xh'),
             'length' => '5',
             // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         ],
 
-        'alternative' => [
-            'salt' => env('SALT_ALT', '0tYCXU^YcWzL*SG/n2>egJC`;+(cRQ_-o=1(Br(l^[fMt})}hr~33MUbE#ymaARP',),
+        'users' => [
+            'salt' => env('SALT_USERS', '0tYCXU^YcWzL*SG/n2>egJC`;+(cRQ_-o=1(Br(l^[fMt})}hr~33MUbE#ymaARP',),
+            'length' => '5',
+            // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+        ],
+
+        'threads' => [
+            'salt' => env('SALT_THREADS', '0tYCXU^YcWzL*SG/n2>egJC`;+(cRQ_-o=1(Br(l^[fMt})}hr~33MUbE#ymaARP',),
             'length' => '5',
             // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         ],

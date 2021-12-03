@@ -8,12 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
-    protected $appends = ['avatar_hash', 'hash'];
+    protected $appends = ['hash', 'name'];
 
     /**
      * The attributes that are mass assignable.
@@ -45,15 +47,50 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $dates = [
+        'email_verified_at', 'created_at', 'updated_at', 'deleted_at'
+    ];
+
     /**
-     * Get gravatar id
-     * Literally a MD5 Hash of the E-Mail
+     * Get the posts for this user.
      */
-    public function getAvatarHashAttribute () {
-        return md5($this->email);
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
     }
 
-    public function getHashAttribute () {
-        return Hashids::encode($this->id);
+    /**
+     * Get the threads for this user.
+     */
+    public function threads()
+    {
+        return $this->hasMany('App\Models\Thread');
     }
+
+    public function getNameAttribute(){
+        $name = '';
+
+        if ($this->first_name === '' && $this->last_name === '') {
+            $name = $this->username;
+        } else {
+            if($this->first_name != ''){
+                $name = $this->first_name;
+            }
+            if($this->last_name != ''){
+                if($name != ''){
+                    $name .= ' '.$this->last_name;
+                }else{
+                    $name = $this->last_name;
+                }
+            }
+        }
+
+        return $name;
+    }
+
+    public function getHashAttribute()
+    {
+        return Hashids::connection('users')->encode($this->id);
+    }
+
 }
