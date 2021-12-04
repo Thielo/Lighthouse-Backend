@@ -57,7 +57,7 @@ class UsersTableSeeder extends Seeder
                 'user_id' => $account->id
             ];
             $profile = Profile::create(array_merge($profileData, $user['profile']));
-            echo "User: " . $account->username . " created.\n";
+            echo "User: '" . $account->username . "' / '" . $account->email . "' created.\n";
             echo "Profile: " . $profile->id . " created. (User: " . $profile->user_id . ")\n";
         }
     }

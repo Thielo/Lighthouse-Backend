@@ -23,10 +23,8 @@ class ThreadsTableSeeder extends Seeder
             for ($p = 1; $p <= 10; $p++) {
                 $postUser = User::inRandomOrder()->first();
                 $titleTester = rand(1,2);
-                $isFirst = false;
                 if ($p == 1) {
                     $thisUID = $threadUser->id;
-                    $isFirst = true;
                     $thisTitle = '';
                 } else if ($titleTester > 1) {
                     $thisUID = $postUser->id;
@@ -34,7 +32,6 @@ class ThreadsTableSeeder extends Seeder
                 }
                 $post = Post::create([
                     'user_id' => $thisUID,
-                    'is_first' => $isFirst,
                     'thread_id' => $thread->id,
                     'title' => $thisTitle,
                     'body' => '<p>'.$faker->text().'</p>',

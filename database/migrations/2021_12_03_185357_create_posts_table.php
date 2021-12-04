@@ -14,7 +14,6 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('is_first')->default(false);
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('thread_id')->unsigned()->nullable();
             $table->bigInteger('post_id')->unsigned()->nullable();

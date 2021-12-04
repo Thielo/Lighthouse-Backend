@@ -54,16 +54,14 @@ class User extends Authenticatable
     /**
      * Get the posts for this user.
      */
-    public function posts()
-    {
+    public function posts() {
         return $this->hasMany('App\Models\Post');
     }
 
     /**
      * Get the threads for this user.
      */
-    public function threads()
-    {
+    public function threads() {
         return $this->hasMany('App\Models\Thread');
     }
 
@@ -88,8 +86,7 @@ class User extends Authenticatable
         return $name;
     }
 
-    public function getHashAttribute()
-    {
+    public function getHashAttribute() {
         return Hashids::connection('users')->encode($this->id);
     }
 
