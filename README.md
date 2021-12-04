@@ -1,10 +1,9 @@
-<p align="center"><a href="https://github.com/thielo/lighthouse-app" target="_blank"><img src="https://raw.githubusercontent.com/thielo/lighthouse-backend/art/images/logo.svg" width="300"></a></p>
+<p align="center"><a href="https://github.com/thielo/lighthouse-app" target="_blank"><img src="https://raw.githubusercontent.com/thielo/lighthouse-backend/main/art/images/logo.svg" width="300"></a></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework">Frontend</a>
-<a href="https://packagist.org/packages/laravel/framework">Backend</a>
-<a href="https://packagist.org/packages/laravel/framework">Full App</a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="hhttps://github.com/Thielo/Lighthouse-Frontend">Frontend</a>
+<a href="https://github.com/Thielo/Lighthouse-Backend">Backend</a>
+<a href="https://github.com/Thielo/Lighthouse-App">Full App</a>
 </p>
 
 ## About Lighthouse
