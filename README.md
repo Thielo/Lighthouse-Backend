@@ -1,7 +1,7 @@
-<p align="center"><a href="https://github.com/thielo/lighthouse-app" target="_blank"><img src="https://raw.githubusercontent.com/thielo/lighthouse-backend/main/art/images/logo.svg" width="300"></a></p>
+<p align="center"><a href="https://github.com/thielo/lighthouse-app" target="_blank"><img src="https://raw.githubusercontent.com/thielo/lighthouse-backend/main/art/images/logo.svg" width="150"></a></p>
 
 <p align="center">
-<a href="hhttps://github.com/Thielo/Lighthouse-Frontend">Frontend</a>
+<a href="https://github.com/Thielo/Lighthouse-Frontend">Frontend</a>
 <a href="https://github.com/Thielo/Lighthouse-Backend">Backend</a>
 <a href="https://github.com/Thielo/Lighthouse-App">Full App</a>
 </p>
