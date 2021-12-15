@@ -35,6 +35,6 @@ class Profile extends Model
      */
     public function user()
     {
-        return $this->belongsto('App\Models\User')->withdefault();
+        return $this->belongsto(User::class)->withdefault();
     }
 }

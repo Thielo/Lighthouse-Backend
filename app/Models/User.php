@@ -65,20 +65,27 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Thread');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function profile() {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
     public function getNameAttribute(){
         $name = '';
 
-        if ($this->first_name === '' && $this->last_name === '') {
+        if ($this->profile->first_name === '' && $this->profile->last_name === '') {
             $name = $this->username;
         } else {
-            if($this->first_name != ''){
-                $name = $this->first_name;
+            if($this->profile->first_name != ''){
+                $name = $this->profile->first_name;
             }
-            if($this->last_name != ''){
+            if($this->profile->last_name != ''){
                 if($name != ''){
-                    $name .= ' '.$this->last_name;
+                    $name .= ' '.$this->profile->last_name;
                 }else{
-                    $name = $this->last_name;
+                    $name = $this->profile->last_name;
                 }
             }
         }
@@ -89,5 +96,4 @@ class User extends Authenticatable
     public function getHashAttribute() {
         return Hashids::connection('users')->encode($this->id);
     }
-
 }

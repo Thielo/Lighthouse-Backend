@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\UserController;
 // use App\Models\Thread;
 
 /*
@@ -20,10 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* Route::middleware('auth:sanctum')->apiResource(
-    'threads',
-    ThreadController::class
-); */
+Route::middleware('auth:sanctum')->apiResource(
+    'users',
+    UserController::class
+);
 
 // Route::get('/thread/{hash}', [ThreadController::class, 'getAllEntries']);
 // Route::get('/thread/{hash}', [ThreadController::class, 'getThread']);
