@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserCollection;
@@ -16,8 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return (new UserCollection($users))->complete(false);
+        $users = UserCollection::make(User::all())->complete(true);
+        return $users;
     }
 
     /**
@@ -65,12 +66,9 @@ class UserController extends Controller
         //
     }
 
-    public function getAllEntries () {
-        return User::get();
-    }
-
     public function getUserById ($hash) {
         $id = Hashids::decode($hash);
-        return User::where('id', $id)->firstOrFail();
+        $user = UserResource(User::findOrFail($id))->complete(true);
+        return $user;
     }
 }

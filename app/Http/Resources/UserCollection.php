@@ -18,10 +18,13 @@ class UserCollection extends ResourceCollection
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return array
      */
     public function toArray($request)
     {
-        return (new UserResource($this->collection))->complete($this->complete);
+        return $this->collection->map(function(UserResource $resource) use($request){
+            return $resource->complete($this->complete)->toArray($request);
+        })->all();
+        // return (new UserResource($this->collection))->complete($this->complete);
     }
 }

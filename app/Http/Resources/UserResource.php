@@ -22,28 +22,30 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         $user = [
-            'id' => $this->hash,
-            'username' => $this->username,
+            'hash' => $this->hash,
             'name' => $this->name,
-            'image' => $this->image,
-            'roles' => $this->getRoleNames(),
+            'email' => $this->email,
         ];
 
         if ($this->complete === true) {
-            $fullData = [
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'email' => $this->email,
-                'email_verified_at' => $this->email_verified_at,
+            print_r($this->getPermissionsViaRoles()->count());
+            // $permissionsViaRole = $this->getPermissionsViaRoles()->toArray();
+            // print_r(array_map(fn($permission): array => $permission->name, $permissionsViaRole[0]));
+            $permissions = []; /*array_map(function($permission) {
+                return $permission->name;
+            }, $this->getPermissionsViaRoles()->toArray()); */
+            //var_dump($this->getPermissionsViaRoles()->toArray());
+            $data = [
+                'id' => $this->id,
+                'roles' => $this->getRoleNames(),
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
-                'deleted_at' => $this->updated_at,
-                'threads' => (new ThreadCollection($this->threads))->minimal(true),
+                'deleted_at' => $this->deleted_at,
+                'permissions' => $permissions,
             ];
-            $user = array_merge($user, $fullData);
+            $user = array_merge($user, $data);
         }
 
         return $user;
-        // return parent::toArray($request);
     }
 }
