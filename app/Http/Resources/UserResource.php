@@ -28,20 +28,15 @@ class UserResource extends JsonResource
         ];
 
         if ($this->complete === true) {
-            print_r($this->getPermissionsViaRoles()->count());
-            // $permissionsViaRole = $this->getPermissionsViaRoles()->toArray();
-            // print_r(array_map(fn($permission): array => $permission->name, $permissionsViaRole[0]));
-            $permissions = []; /*array_map(function($permission) {
-                return $permission->name;
-            }, $this->getPermissionsViaRoles()->toArray()); */
-            //var_dump($this->getPermissionsViaRoles()->toArray());
             $data = [
                 'id' => $this->id,
                 'roles' => $this->getRoleNames(),
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
                 'deleted_at' => $this->deleted_at,
-                'permissions' => $permissions,
+                'permissions' => array_map(function ($permission) {
+                    return $permission['name'];
+                }, $this->getPermissionsViaRoles()->toArray()),
             ];
             $user = array_merge($user, $data);
         }
