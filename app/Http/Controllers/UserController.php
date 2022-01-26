@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = UserCollection::make(User::all())->complete(true);
+        $users = UserCollection::make(User::withTrashed()->all())->complete(true);
         return $users;
     }
 
@@ -40,7 +40,9 @@ class UserController extends Controller
      */
     public function show($hash)
     {
-        return $this->getUserById($hash);
+        $user = $this->getUserById($hash);
+        $userData = UserCollection::make($user)->complete(true);
+        return $userData;
     }
 
     /**
@@ -50,9 +52,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $hash)
     {
-        //
+        $id = Hashids::connection('users')->decode($hash);
+        $user = User::firstOrFail('id', $id);
+        $user->username = $request->input('username');
+        $user->save();
+        return $user;
     }
 
     /**
@@ -67,8 +73,8 @@ class UserController extends Controller
     }
 
     public function getUserById ($hash) {
-        $id = Hashids::decode($hash);
-        $user = UserResource(User::findOrFail($id))->complete(true);
+        $id = Hashids::connection('users')->decode($hash);
+        $user = User::findOrFail($id);
         return $user;
     }
 }

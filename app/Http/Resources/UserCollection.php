@@ -25,6 +25,5 @@ class UserCollection extends ResourceCollection
         return $this->collection->map(function(UserResource $resource) use($request){
             return $resource->complete($this->complete)->toArray($request);
         })->all();
-        // return (new UserResource($this->collection))->complete($this->complete);
     }
 }
