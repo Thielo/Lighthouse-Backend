@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserCollection;
+use Illuminate\Support\Facades\Response;
 use Vinkla\Hashids\Facades\Hashids;
 
 class UserController extends Controller
@@ -17,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = UserCollection::make(User::withTrashed()->all())->complete(true);
+        $users = UserCollection::make(User::withTrashed()->get())->complete(true);
         return $users;
     }
 
@@ -40,7 +41,7 @@ class UserController extends Controller
      */
     public function show($hash)
     {
-        $user = $this->getUserById($hash);
+        $user = $this->getUserCollectionByHash($hash);
         $userData = UserCollection::make($user)->complete(true);
         return $userData;
     }
@@ -50,31 +51,96 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $hash)
     {
-        $id = Hashids::connection('users')->decode($hash);
-        $user = User::firstOrFail('id', $id);
+        $user = $this->getUserByHash($hash);
         $user->username = $request->input('username');
         $user->save();
-        return $user;
+        return Response::json(
+            array(
+                'status' => 'success',
+                'action' => 'update',
+                'user' => $user
+            )
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $hash
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($hash): \Illuminate\Http\JsonResponse
     {
-        //
+        $user = $this->getUserByHash($hash);
+        $user->delete();
+        return Response::json(
+            array(
+                'status' => 'success',
+                'action' => 'delete',
+                'user' => $user
+            )
+        );
     }
 
-    public function getUserById ($hash) {
+    /**
+     * Force-Removes the specified resource from storage.
+     *
+     * @param $hash
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function forceDelete($hash): \Illuminate\Http\JsonResponse
+    {
+        $user = $this->getUserByHash($hash);
+        $user->forceDelete();
+        return Response::json(
+            array(
+                'status' => 'success',
+                'action' => 'force-delete',
+                'user' => $user
+            )
+        );
+    }
+
+    /**
+     * Restores the specified resource from storage.
+     *
+     * @param $hash
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function restore($hash): \Illuminate\Http\JsonResponse
+    {
+        $user = $this->getUserByHash($hash);
+        $user->restore();
+        return Response::json(
+            array(
+                'status' => 'success',
+                'action' => 'force-delete',
+                'user' => $user
+            )
+        );
+    }
+
+    /**
+     * @param $hash
+     * @return User
+     */
+    public function getUserByHash ($hash): User
+    {
         $id = Hashids::connection('users')->decode($hash);
-        $user = User::findOrFail($id);
-        return $user;
+        return User::where('id', $id)->firstOrFail();
+    }
+
+    /**
+     * @param $hash
+     * @return User
+     */
+    public function getUserCollectionByHash ($hash): User
+    {
+        $id = Hashids::connection('users')->decode($hash);
+        return User::findOrFail($id);
     }
 }
