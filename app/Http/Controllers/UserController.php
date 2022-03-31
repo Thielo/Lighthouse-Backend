@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -41,9 +42,12 @@ class UserController extends Controller
      */
     public function show($hash)
     {
+        /*
         $user = $this->getUserCollectionByHash($hash);
+        $user = $this->getUserByHash($hash);
         $userData = UserCollection::make($user)->complete(true);
-        return $userData;
+        return $userData; */
+        return $this->getUserByHash($hash);
     }
 
     /**
@@ -136,7 +140,6 @@ class UserController extends Controller
 
     /**
      * @param $hash
-     * @return User
      */
     public function getUserCollectionByHash ($hash): User
     {

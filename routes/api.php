@@ -16,15 +16,35 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::apiResource('users', UserController::class);
+        Route::delete('/user/{id}/force-delete', [UserController::class, 'forceDelete']);
+        Route::put('/user/{id}/restore', [UserController::class, 'restore']);
+    });
 });
 
-Route::middleware('auth:sanctum')->apiResource(
-    'users',
-    UserController::class
-);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::get('/profile/{hash}', [ProfileController::class, 'show']);
+    Route::delete('/profile/delete', [ProfileController::class, 'delete']);
+    Route::put('/profile/edit', [ProfileController::class, 'store']);
 
-// Route::get('/thread/{hash}', [ThreadController::class, 'getAllEntries']);
-// Route::get('/thread/{hash}', [ThreadController::class, 'getThread']);
-// Route::get('/post/{hash}', [PostController::class, 'getPost']);
+    Route::post('/report', [ReportController::class, 'create']);
+});
+
+// Threads
+Route::get('/threads', [ThreadController::class, 'index']);
+Route::get('/threads/{hash}', [ThreadController::class, 'show']);
+Route::post('/threads', [ThreadController::class, 'create']);
+Route::put('/thread/{hash}', [ThreadController::class, 'create']);
+
+// Posts
+Route::get('/post/{hash}', [PostController::class, 'show']);
+Route::post('/post', [PostController::class, 'create']);
+Route::put('/post/{hash}', [PostController::class, 'store']);
+Route::delete('/post/{hash}', [PostController::class, 'destroy']);
